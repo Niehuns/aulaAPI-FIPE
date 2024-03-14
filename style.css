@@ -1,0 +1,22 @@
+body {
+    font-family: "calibri", sans-serif;
+    color: #060505;
+    margin: 0;
+  }
+  
+  #head {
+    margin: 0;
+    padding: 30px;
+    text-align: center;
+    border-bottom: 1px solid #1C2833;
+  }
+  
+  carroslist {
+    position: absolute;
+    margin-top: 10px;
+    z-index: 1;
+    width: 250px;
+    max-height: 200px; /* Defina a altura máxima desejada */
+    overflow-y: auto; /* Adicione a barra de rolagem vertical */
+  }
+  

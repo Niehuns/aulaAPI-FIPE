@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carros JSON</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Lista de Marcas de Carros</h1>
+    <input class="box" list="marcas" placeholder="Marcas">
+    <datalist id="marcas"></datalist>
+
+    <button id="searchButton">Pesquisar Modelos</button>
+    <button id="clearButton">Limpar Pesquisa</button>
+
+    <h2>Modelos de Carros</h2>
+    <ul id="modeloList"></ul>
+
+    <script>
+        // Função para carregar e exibir marcas de carros
+        function loadAndShowCarBrands() {
+            fetch('carro.json')
+                .then(response => response.json())
+                .then(carros => {
+                    const dataList = document.getElementById('marcas');
+                    dataList.innerHTML = '';
+                    const marcas = [];
+                    carros.forEach(carro => {
+                        if (!marcas.includes(carro.marca)) {
+                            marcas.push(carro.marca);
+                            const option = document.createElement('option');
+                            option.value = carro.marca;
+                            dataList.appendChild(option);
+                        }
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar o arquivo JSON:', error));
+        }
+
+        // Função para carregar e exibir modelos de carros da marca selecionada
+        function loadAndShowCarModels(selectedBrand) {
+            fetch('carro.json')
+                .then(response => response.json())
+                .then(carros => {
+                    const modeloList = document.getElementById('modeloList');
+                    modeloList.innerHTML = '';
+                    carros.forEach(carro => {
+                        if (carro.marca === selectedBrand) {
+                            const li = document.createElement('li');
+                            li.textContent = carro.modelo;
+                            modeloList.appendChild(li);
+                        }
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar o arquivo JSON:', error));
+        }
+
+        // Adicionar evento de clique à caixa de entrada para carregar e exibir as marcas de carros
+        document.querySelector('.box').addEventListener('focus', loadAndShowCarBrands);
+
+        // Adicionar evento de clique ao botão para pesquisar modelos de carros
+        document.getElementById('searchButton').addEventListener('click', function() {
+            const selectedBrand = document.querySelector('.box').value;
+            if (selectedBrand) {
+                loadAndShowCarModels(selectedBrand);
+            }
+        });
+
+        // Adicionar evento de clique ao botão para limpar a pesquisa
+        document.getElementById('clearButton').addEventListener('click', function() {
+            document.getElementById('modeloList').innerHTML = '';
+            document.querySelector('.box').value = '';
+        });
+    </script>
+</body>
+</html>
